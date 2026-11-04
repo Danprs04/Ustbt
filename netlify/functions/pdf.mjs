@@ -1,0 +1,3 @@
+import {getStore} from '@netlify/blobs';
+export default async()=>{try{const store=getStore('usi-toolbox');const info=await store.get('current.json',{type:'json'});if(!info)return new Response('No PDF published',{status:404});const bytes=await store.get('pdf/'+info.weekId,{type:'arrayBuffer'});if(!bytes)return new Response('PDF missing',{status:404});return new Response(bytes,{headers:{'Content-Type':'application/pdf','Cache-Control':'no-store','Content-Disposition':'inline; filename="toolbox-talk.pdf"'}})}catch(e){return new Response('Storage unavailable',{status:503})}};
+export const config={path:'/api/pdf'};
